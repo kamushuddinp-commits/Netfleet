@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Student Dashboard – LearnHub')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-4">
+    <!-- Student Header Banner -->
+    <div class="custom-card p-4 mb-4 bg-white">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="course-icon-box mb-0">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <div>
+                        <div class="badge bg-primary-subtle text-primary fw-bold mb-1">Student Portal</div>
+                        <h2 class="fw-bold mb-1" th:text="${student.fullName}">Alice Johnson</h2>
+                        <div class="text-muted small">
+                            <span class="me-3"><i class="bi bi-person-badge me-1"></i> ID: <strong th:text="${student.studentNumber}">STU-2026-001</strong></span>
+                            <span class="me-3"><i class="bi bi-book me-1"></i> Major: <strong th:text="${student.major}">Computer Science</strong></span>
+                            <span><i class="bi bi-envelope me-1"></i> <span th:text="${student.email}">alice@example.com</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a th:href="@{/student/courses}" class="btn btn-primary px-3 py-2 rounded-pill fw-bold shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Browse &amp; Enroll
+                </a>
+                <a th:href="@{/student/my-courses}" class="btn btn-outline-secondary px-3 py-2 rounded-pill ms-2">
+                    <i class="bi bi-journal-check me-1"></i> My Courses
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metric Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary-subtle text-primary">
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0" th:text="${student.activeEnrollmentCount}">3</h3>
+                    <div class="text-muted small">Enrolled Courses</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon bg-success-subtle text-success">
+                    <i class="bi bi-grid-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0" th:text="${allCourses.size()}">5</h3>
+                    <div class="text-muted small">Available Courses Catalog</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon bg-info-subtle text-info">
+                    <i class="bi bi-diagram-3-fill"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0 text-dark">Many-to-Many</h5>
+                    <div class="text-muted small">Object Reference Passed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Enrollments Section -->
+    <div class="custom-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold mb-0"><i class="bi bi-journal-check text-primary me-2"></i>My Active Course Enrollments</h4>
+                <div class="text-muted small">Dynamic array storage holds your direct course references.</div>
+            </div>
+            <a th:href="@{/student/my-courses}" class="btn btn-sm btn-outline-primary rounded-pill">Manage Enrollments</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(enrolledCourses)}" class="text-center py-5">
+            <i class="bi bi-journal-x fs-1 text-muted mb-2"></i>
+            <h5>You have not enrolled in any courses yet</h5>
+            <p class="text-muted small">Browse the course catalog to enroll in Java, Python, or Web Development courses.</p>
+            <a th:href="@{/student/courses}" class="btn btn-primary rounded-pill px-4 mt-2">Browse Course Catalog</a>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(enrolledCourses)}" class="row g-3">
+            <div th:each="course : ${enrolledCourses}" class="col-md-4">
+                <div class="course-card custom-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge badge-enrolled"><i class="bi bi-check-circle me-1"></i>Enrolled</span>
+                            <span class="badge bg-light text-dark border" th:text="${course.courseCode}">CS101</span>
+                        </div>
+                        <h5 class="fw-bold mt-2" th:text="${course.title}">Java Programming</h5>
+                        <p class="text-muted small flex-grow-1" th:text="${course.description}">Description</p>
+                        <div class="border-top pt-2 mt-auto d-flex justify-content-between small text-muted">
+                            <span><i class="bi bi-person me-1"></i> <span th:text="${course.instructor}">Instructor</span></span>
+                            <span><i class="bi bi-clock me-1"></i> <span th:text="${course.creditHours} + ' Credits'">3 Credits</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explore More Courses -->
+    <div class="custom-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold mb-0"><i class="bi bi-compass text-success me-2"></i>Recommended Courses to Expand Your Skills</h4>
+                <div class="text-muted small">Discover courses you haven't enrolled in yet.</div>
+            </div>
+            <a th:href="@{/student/courses}" class="btn btn-sm btn-outline-success rounded-pill">Browse All</a>
+        </div>
+
+        <div class="row g-3">
+            <th:block th:each="course : ${allCourses}">
+                <div th:unless="${student.isEnrolledIn(course)}" class="col-md-4">
+                    <div class="course-card custom-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge-category" th:text="${course.category}">Category</span>
+                                <span class="badge bg-light text-dark border" th:text="${course.courseCode}">CS102</span>
+                            </div>
+                            <h5 class="fw-bold mt-2" th:text="${course.title}">Course Title</h5>
+                            <p class="text-muted small flex-grow-1" th:text="${course.description}">Description</p>
+                            <div class="border-top pt-3 mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3 small text-muted">
+                                    <span><i class="bi bi-person me-1"></i> <span th:text="${course.instructor}">Instructor</span></span>
+                                    <span class="badge bg-success-subtle text-success" th:text="${course.availableSeats} + ' seats left'">25 seats</span>
+                                </div>
+                                <form th:action="@{/student/enroll}" method="post">
+                                    <input type="hidden" name="courseId" th:value="${course.courseId}">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm w-100 rounded-pill fw-bold">
+                                        <i class="bi bi-plus-lg me-1"></i> Enroll in Course
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

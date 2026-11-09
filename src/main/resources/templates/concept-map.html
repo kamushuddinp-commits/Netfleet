@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('M:N ER Architecture &amp; Java Reference Passing')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-4">
+    <!-- Header -->
+    <div class="mb-4">
+        <span class="badge bg-primary text-white fw-bold px-3 py-2 rounded-pill">Core Java Principles</span>
+        <h2 class="fw-bold mt-2">Many-to-Many (M:N) ER Mapping via Dynamic Arrays &amp; Reference Passing</h2>
+        <p class="text-muted">
+            Comprehensive architectural breakdown of how LearnHub models the M:N relationship in pure Java.
+        </p>
+    </div>
+
+    <!-- 3 Core Concept Cards -->
+    <div class="row g-4 mb-4">
+        <!-- 1. Dynamic Array Storage -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-primary fs-6 p-2 rounded-3"><i class="bi bi-collection"></i></span>
+                    <h5 class="fw-bold mb-0">1. Dynamic Array Storage</h5>
+                </div>
+                <p class="text-muted small">
+                    Instead of static arrays (<code>Course[]</code>, <code>Student[]</code>) which have fixed memory bounds, both <code>Student</code> and <code>Course</code> use <code>java.util.ArrayList</code>.
+                </p>
+                <div class="concept-box p-3 small mb-2">
+<span class="text-secondary">// Inside Student.java &amp; Course.java</span>
+<span class="text-warning">private final</span> ArrayList&lt;Enrollment&gt; enrollments = <span class="text-info">new</span> ArrayList&lt;&gt;();
+                </div>
+                <ul class="text-muted small ps-3 mb-0">
+                    <li>Dynamic memory expansion upon enrollment</li>
+                    <li>Automatic heap reallocation and index shifting</li>
+                    <li>O(1) amortized insertion with <code>ArrayList.add()</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 2. Object Reference Passing -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-success fs-6 p-2 rounded-3"><i class="bi bi-arrow-repeat"></i></span>
+                    <h5 class="fw-bold mb-0">2. Object Reference Passing</h5>
+                </div>
+                <p class="text-muted small">
+                    Java manipulates objects by reference. When an enrollment is formed, the references of <code>Student</code> and <code>Course</code> are passed directly into the associative entity.
+                </p>
+                <div class="concept-box p-3 small mb-2">
+<span class="text-secondary">// Enrollment.java constructor</span>
+<span class="text-warning">public</span> Enrollment(String id, Student student, Course course) {
+    <span class="text-info">this</span>.student = student; <span class="text-success">// heap reference</span>
+    <span class="text-info">this</span>.course = course;   <span class="text-success">// heap reference</span>
+}
+                </div>
+                <ul class="text-muted small ps-3 mb-0">
+                    <li>Zero redundant data duplication in heap memory</li>
+                    <li>Mutating Course attributes immediately reflects across all enrolled Students</li>
+                    <li>Bidirectional navigation via reference traversal</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. Many-to-Many ER Association -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-warning fs-6 p-2 rounded-3 text-dark"><i class="bi bi-diagram-3-fill"></i></span>
+                    <h5 class="fw-bold mb-0">3. Associative Join Entity</h5>
+                </div>
+                <p class="text-muted small">
+                    In database ER theory, M:N relationships are normalized through a join table. In Java OOP, this is achieved through the <code>Enrollment</code> associative class.
+                </p>
+                <div class="concept-box p-3 small mb-2">
+<span class="text-secondary">// Linking references bidirectionally</span>
+student.addEnrollment(enrollment);
+course.addEnrollment(enrollment);
+                </div>
+                <ul class="text-muted small ps-3 mb-0">
+                    <li>One Student &rarr; Many Enrollments &rarr; Many Courses</li>
+                    <li>One Course &rarr; Many Enrollments &rarr; Many Students</li>
+                    <li>Preserves relationship metadata (enrollment date, grade, status)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Heap Memory State -->
+    <div class="custom-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold mb-1"><i class="bi bi-memory text-primary me-2"></i>Live In-Memory M:N Mapping State</h4>
+                <p class="text-muted small mb-0">Inspecting the active references stored inside the dynamic ArrayLists.</p>
+            </div>
+            <span class="badge bg-success-subtle text-success border border-success fw-bold">Live JVM Heap Data</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>Enrollment ID</th>
+                        <th>Student Reference</th>
+                        <th>Course Reference</th>
+                        <th>Enrollment Date</th>
+                        <th>Relationship Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="enr : ${enrollments}">
+                        <td>
+                            <code class="fw-bold text-primary" th:text="${enr.enrollmentId}">ENR-1001</code>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-person-circle text-secondary"></i>
+                                <div>
+                                    <strong th:text="${enr.student.fullName}">Student Name</strong>
+                                    <div class="small text-muted" th:text="${enr.student.email}">email</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <i th:class="'bi ' + ${enr.course.icon} + ' text-primary fs-5'"></i>
+                                <div>
+                                    <strong th:text="${enr.course.title}">Course Title</strong>
+                                    <div class="small text-muted" th:text="${enr.course.courseCode} + ' • ' + ${enr.course.instructor}">CS101</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:text="${enr.formattedDate}">Nov 09, 2026</td>
+                        <td>
+                            <span class="badge" th:classappend="${enr.active ? 'bg-success' : 'bg-secondary'}" th:text="${enr.status}">ACTIVE</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Interactive Reference Traversal Visualizer -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="custom-card p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-mortarboard text-primary me-2"></i>Students &rarr; Enrolled Courses</h5>
+                <div class="accordion" id="studentAccordion">
+                    <div th:each="s, iterStat : ${students}" class="accordion-item mb-2 border rounded-3 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold py-2" type="button" data-bs-toggle="collapse"
+                                    th:data-bs-target="'#studentCollapse' + ${s.id}">
+                                <div class="d-flex justify-content-between w-100 me-3 align-items-center">
+                                    <span th:text="${s.fullName}">Student Name</span>
+                                    <span class="badge bg-primary rounded-pill" th:text="${s.activeEnrollmentCount} + ' Courses'">3 Courses</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div th:id="'studentCollapse' + ${s.id}" class="accordion-collapse collapse" data-bs-parent="#studentAccordion">
+                            <div class="accordion-body bg-light p-3">
+                                <div class="small text-muted mb-2">Traversing <code>student.getEnrolledCourses()</code>:</div>
+                                <ul class="list-group list-group-flush rounded-3 border">
+                                    <li th:each="c : ${s.enrolledCourses}" class="list-group-item d-flex justify-content-between align-items-center py-2 small">
+                                        <span><i class="bi bi-check2 text-success me-1"></i> <strong th:text="${c.title}">Java Programming</strong></span>
+                                        <span class="badge bg-secondary-subtle text-secondary" th:text="${c.courseCode}">CS101</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="custom-card p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-collection text-success me-2"></i>Courses &rarr; Enrolled Students</h5>
+                <div class="accordion" id="courseAccordion">
+                    <div th:each="c, iterStat : ${courses}" class="accordion-item mb-2 border rounded-3 overflow-hidden">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold py-2" type="button" data-bs-toggle="collapse"
+                                    th:data-bs-target="'#courseCollapse' + ${c.courseId}">
+                                <div class="d-flex justify-content-between w-100 me-3 align-items-center">
+                                    <span th:text="${c.title}">Course Title</span>
+                                    <span class="badge bg-success rounded-pill" th:text="${c.enrolledCount} + ' Students'">2 Students</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div th:id="'courseCollapse' + ${c.courseId}" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                            <div class="accordion-body bg-light p-3">
+                                <div class="small text-muted mb-2">Traversing <code>course.getEnrolledStudents()</code>:</div>
+                                <ul class="list-group list-group-flush rounded-3 border">
+                                    <li th:each="s : ${c.enrolledStudents}" class="list-group-item d-flex justify-content-between align-items-center py-2 small">
+                                        <span><i class="bi bi-person text-primary me-1"></i> <strong th:text="${s.fullName}">Alice Johnson</strong> (<span th:text="${s.major}">CS</span>)</span>
+                                        <span class="badge bg-light text-dark border" th:text="${s.email}">email</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

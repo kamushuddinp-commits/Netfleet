@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Student Registration – LearnHub')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="custom-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <span class="brand-icon mb-2"><i class="bi bi-person-plus-fill"></i></span>
+                    <h3 class="fw-bold">Student Registration</h3>
+                    <p class="text-muted small">Create an account to browse and enroll in online courses.</p>
+                </div>
+
+                <form th:action="@{/register}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Full Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" name="fullName" class="form-control" placeholder="e.g. Eleanor Vance" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" name="email" class="form-control" placeholder="eleanor@university.edu" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Academic Major / Department</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-book"></i></span>
+                            <select name="major" class="form-select">
+                                <option value="Computer Science" selected>Computer Science</option>
+                                <option value="Software Engineering">Software Engineering</option>
+                                <option value="Data Science &amp; AI">Data Science &amp; AI</option>
+                                <option value="Information Systems">Information Systems</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" name="password" class="form-control" placeholder="Create a secure password" required minlength="4">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold mb-3 shadow-sm">
+                        <i class="bi bi-check2-circle me-1"></i> Register &amp; Access Courses
+                    </button>
+                </form>
+
+                <div class="text-center small text-muted">
+                    Already registered? <a th:href="@{/login}" class="fw-bold text-primary">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('LearnHub – Online Course Portal')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main>
+    <!-- Hero Banner -->
+    <section class="hero-gradient text-white py-5">
+        <div class="container py-3">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="badge bg-white text-primary fw-bold px-3 py-2 rounded-pill mb-3">
+                        <i class="bi bi-diagram-3-fill me-1"></i> Online Portal Mapping: Many-to-Many (M:N) ER Architecture
+                    </div>
+                    <h1 class="display-4 fw-bold mb-3">LearnHub Online Course Portal</h1>
+                    <p class="lead text-white-50 mb-4" style="max-width: 650px;">
+                        A web-based education platform built in Java. Demonstrating 
+                        <strong>dynamic array storage (<code class="text-warning">ArrayList</code>)</strong> and 
+                        <strong>object reference passing</strong> to model bidirectional Many-to-Many relationships between students and online courses.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a th:href="@{/concept}" class="btn btn-warning btn-lg px-4 rounded-pill fw-bold shadow-sm">
+                            <i class="bi bi-cpu-fill me-2"></i> Explore Java Architecture
+                        </a>
+                        <a th:href="@{/login}" class="btn btn-outline-light btn-lg px-4 rounded-pill">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Open Portal
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block">
+                    <!-- Visual M:N Card -->
+                    <div class="card bg-white text-dark shadow-lg rounded-4 border-0 p-3">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <span class="badge bg-primary-subtle text-primary fw-bold">Live ER Mapping</span>
+                            <h6 class="fw-bold mt-2 mb-0">Many-to-Many In Action</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="p-2 bg-light rounded-3 mb-2 small">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-primary">Student: Alice</span>
+                                    <span class="badge bg-secondary">3 Courses</span>
+                                </div>
+                                <div class="text-muted fst-italic">Java, Python, Web Dev</div>
+                            </div>
+                            <div class="text-center my-1 text-muted">
+                                <i class="bi bi-arrow-down-up fs-5 text-primary"></i>
+                            </div>
+                            <div class="p-2 bg-light rounded-3 small">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-success">Course: Java CS101</span>
+                                    <span class="badge bg-success">Multiple Students</span>
+                                </div>
+                                <div class="text-muted fst-italic">Alice, Bob, Diana</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Metrics Row -->
+    <section class="container mt-n4 py-4">
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-primary-subtle text-primary">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0" th:text="${metrics.totalStudents}">4</h3>
+                        <div class="text-muted small">Registered Students</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-success-subtle text-success">
+                        <i class="bi bi-journal-code"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0" th:text="${metrics.totalCourses}">5</h3>
+                        <div class="text-muted small">Online Courses</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-warning-subtle text-warning">
+                        <i class="bi bi-link-45deg"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0" th:text="${metrics.totalEnrollments}">10</h3>
+                        <div class="text-muted small">M:N Enrollments</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-info-subtle text-info">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0" th:text="${metrics.avgCoursesPerStudent}">2.5</h3>
+                        <div class="text-muted small">Avg Courses / Student</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Demo Accounts -->
+    <section class="container my-4">
+        <div class="custom-card p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <h5 class="fw-bold mb-1"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>One-Click Testing Accounts</h5>
+                    <p class="text-muted small mb-0">Select any pre-configured persona to test student course enrollment or admin course management.</p>
+                </div>
+                <span class="badge bg-light text-dark border">Pre-seeded Heap Data</span>
+            </div>
+            <div class="row g-3">
+                <!-- Admin -->
+                <div class="col-md-3">
+                    <form th:action="@{/login}" method="post" class="h-100">
+                        <input type="hidden" name="email" value="admin@learnhub.com">
+                        <input type="hidden" name="password" value="admin123">
+                        <button type="submit" class="btn btn-outline-danger w-100 h-100 text-start p-3 rounded-3 shadow-none border">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-danger">ADMIN</span>
+                                <strong class="text-dark">Portal Admin</strong>
+                            </div>
+                            <div class="small text-muted">admin@learnhub.com</div>
+                            <div class="small text-primary mt-1"><i class="bi bi-arrow-right-circle"></i> Log in as Admin</div>
+                        </button>
+                    </form>
+                </div>
+                <!-- Alice -->
+                <div class="col-md-3">
+                    <form th:action="@{/login}" method="post" class="h-100">
+                        <input type="hidden" name="email" value="alice@example.com">
+                        <input type="hidden" name="password" value="pass123">
+                        <button type="submit" class="btn btn-outline-primary w-100 h-100 text-start p-3 rounded-3 shadow-none border">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-primary">STUDENT</span>
+                                <strong class="text-dark">Alice Johnson</strong>
+                            </div>
+                            <div class="small text-muted">Enrolled in 3 courses (Java, etc.)</div>
+                            <div class="small text-primary mt-1"><i class="bi bi-arrow-right-circle"></i> Log in as Alice</div>
+                        </button>
+                    </form>
+                </div>
+                <!-- Bob -->
+                <div class="col-md-3">
+                    <form th:action="@{/login}" method="post" class="h-100">
+                        <input type="hidden" name="email" value="bob@example.com">
+                        <input type="hidden" name="password" value="pass123">
+                        <button type="submit" class="btn btn-outline-primary w-100 h-100 text-start p-3 rounded-3 shadow-none border">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-primary">STUDENT</span>
+                                <strong class="text-dark">Bob Smith</strong>
+                            </div>
+                            <div class="small text-muted">Enrolled in Java &amp; DB</div>
+                            <div class="small text-primary mt-1"><i class="bi bi-arrow-right-circle"></i> Log in as Bob</div>
+                        </button>
+                    </form>
+                </div>
+                <!-- Charlie -->
+                <div class="col-md-3">
+                    <form th:action="@{/login}" method="post" class="h-100">
+                        <input type="hidden" name="email" value="charlie@example.com">
+                        <input type="hidden" name="password" value="pass123">
+                        <button type="submit" class="btn btn-outline-primary w-100 h-100 text-start p-3 rounded-3 shadow-none border">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-primary">STUDENT</span>
+                                <strong class="text-dark">Charlie Davis</strong>
+                            </div>
+                            <div class="small text-muted">Enrolled in Python, Web, Cloud</div>
+                            <div class="small text-primary mt-1"><i class="bi bi-arrow-right-circle"></i> Log in as Charlie</div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Java Concept Demonstration Pillars -->
+    <section class="container my-5">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 rounded-pill">Core Java Principles</span>
+            <h2 class="fw-bold mt-2">How Many-to-Many Mapping is Modeled</h2>
+            <p class="text-muted" style="max-width: 600px; margin: 0 auto;">
+                Built strictly to demonstrate object-oriented design, heap reference passing, and dynamic array collections in Java.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="custom-card p-4 h-100">
+                    <div class="course-icon-box">
+                        <i class="bi bi-collection-play"></i>
+                    </div>
+                    <h5 class="fw-bold">1. Dynamic Array Storage</h5>
+                    <p class="text-muted small">
+                        Both <code>Student</code> and <code>Course</code> maintain dynamic <code>ArrayList&lt;Enrollment&gt;</code> collections. Courses grow dynamically as new learners join, and students can register for as many courses as they wish without static array limits.
+                    </p>
+                    <div class="concept-box py-2 px-3 small mt-auto">
+                        <code>private final ArrayList&lt;Enrollment&gt; enrollments = new ArrayList&lt;&gt;();</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="custom-card p-4 h-100">
+                    <div class="course-icon-box" style="background: #ecfdf5; color: #059669;">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <h5 class="fw-bold">2. Object Reference Passing</h5>
+                    <p class="text-muted small">
+                        Instead of cloning student and course data, the associative <code>Enrollment</code> entity accepts live object references directly in heap memory:
+                        <code>new Enrollment(id, studentRef, courseRef)</code>. Modifying an instructor immediately updates the student's view.
+                    </p>
+                    <div class="concept-box py-2 px-3 small mt-auto">
+                        <code>this.student = student; // Reference passing<br>this.course = course;</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="custom-card p-4 h-100">
+                    <div class="course-icon-box" style="background: #fffbeb; color: #d97706;">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h5 class="fw-bold">3. Bidirectional M:N ER Linkage</h5>
+                    <p class="text-muted small">
+                        Resolves the classic Many-to-Many ER dilemma. From any student, navigate <code>student.getEnrolledCourses()</code>. From any course, navigate <code>course.getEnrolledStudents()</code> with full duplicate prevention and safe reference cleanup.
+                    </p>
+                    <div class="concept-box py-2 px-3 small mt-auto">
+                        <code>student.addEnrollment(enr);<br>course.addEnrollment(enr);</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Courses Preview -->
+    <section class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Available Online Courses</h3>
+                <p class="text-muted small mb-0">Browse active courses with real-time dynamic seat tracking.</p>
+            </div>
+            <a th:href="@{/login}" class="btn btn-outline-primary btn-sm rounded-pill px-3">View All Courses</a>
+        </div>
+
+        <div class="row g-4">
+            <div th:each="course : ${featuredCourses}" class="col-md-4">
+                <div class="course-card custom-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge-category" th:text="${course.category}">Category</span>
+                            <span class="badge bg-light text-dark border fw-bold" th:text="${course.courseCode}">CS101</span>
+                        </div>
+                        <h5 class="fw-bold card-title mt-2 mb-2" th:text="${course.title}">Course Title</h5>
+                        <p class="text-muted small flex-grow-1" th:text="${course.description}">Description</p>
+                        
+                        <div class="border-top pt-3 mt-2">
+                            <div class="d-flex justify-content-between small text-muted mb-2">
+                                <span><i class="bi bi-person me-1"></i> <span th:text="${course.instructor}">Instructor</span></span>
+                                <span><i class="bi bi-clock me-1"></i> <span th:text="${course.creditHours} + ' Credits'">3 Credits</span></span>
+                            </div>
+                            
+                            <!-- Capacity progress -->
+                            <div class="d-flex justify-content-between align-items-center small mb-1">
+                                <span class="text-muted">Enrolled: <strong th:text="${course.enrolledCount} + ' / ' + ${course.maxCapacity}">5 / 30</strong></span>
+                                <span class="badge" th:classappend="${course.availableSeats > 5 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}"
+                                      th:text="${course.availableSeats} + ' seats left'">25 seats left</span>
+                            </div>
+                            <div class="progress progress-capacity">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                     th:style="'width: ' + (${course.enrolledCount} * 100 / ${course.maxCapacity}) + '%;'"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+</body>
+</html>

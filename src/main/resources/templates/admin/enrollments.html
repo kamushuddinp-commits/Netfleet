@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('All Enrollments – LearnHub Admin')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-4">
+    <!-- Header -->
+    <div class="custom-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge bg-danger-subtle text-danger fw-bold px-3 py-1 rounded-pill mb-1">M:N Association Log</span>
+                <h3 class="fw-bold mb-0">Master Enrollment Registry</h3>
+                <p class="text-muted small mb-0">Every row represents an associative Enrollment linking one Student reference and one Course reference.</p>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 py-2 fw-bold" th:text="${enrollments.size()} + ' Total Enrollments'">10 Total</span>
+        </div>
+    </div>
+
+    <!-- Enrollments Table -->
+    <div class="custom-card p-4">
+        <div class="table-responsive">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>Enrollment ID</th>
+                        <th>Student (Reference)</th>
+                        <th>Course (Reference)</th>
+                        <th>Category</th>
+                        <th>Date Enrolled</th>
+                        <th>Status</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="enr : ${enrollments}">
+                        <td>
+                            <code class="fw-bold text-primary" th:text="${enr.enrollmentId}">ENR-1001</code>
+                        </td>
+                        <td>
+                            <a th:href="@{'/admin/students/' + ${enr.student.id}}" class="text-dark fw-bold text-decoration-none">
+                                <i class="bi bi-person-circle text-primary me-1"></i>
+                                <span th:text="${enr.student.fullName}">Alice Johnson</span>
+                            </a>
+                            <div class="small text-muted" th:text="${enr.student.studentNumber}">STU-2026-001</div>
+                        </td>
+                        <td>
+                            <a th:href="@{'/admin/courses/' + ${enr.course.courseId}}" class="text-dark fw-bold text-decoration-none">
+                                <span class="badge bg-light text-dark border me-1" th:text="${enr.course.courseCode}">CS101</span>
+                                <span th:text="${enr.course.title}">Java Programming</span>
+                            </a>
+                            <div class="small text-muted" th:text="'Instructor: ' + ${enr.course.instructor}">Instructor</div>
+                        </td>
+                        <td>
+                            <span class="badge-category" th:text="${enr.course.category}">Software</span>
+                        </td>
+                        <td th:text="${enr.formattedDate}">Nov 09, 2026</td>
+                        <td>
+                            <span class="badge" th:classappend="${enr.active ? 'bg-success' : 'bg-secondary'}" th:text="${enr.status}">ACTIVE</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border" th:text="${enr.grade}">In Progress</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

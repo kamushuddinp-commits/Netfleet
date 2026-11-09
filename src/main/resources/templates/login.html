@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Sign In – LearnHub')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="custom-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <span class="brand-icon mb-2"><i class="bi bi-mortarboard-fill"></i></span>
+                    <h3 class="fw-bold">Sign In to LearnHub</h3>
+                    <p class="text-muted small">Access your student portal or administration console.</p>
+                </div>
+
+                <form th:action="@{/login}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" id="emailInput" name="email" class="form-control"
+                                   th:value="${prefillEmail != null ? prefillEmail : 'alice@example.com'}"
+                                   placeholder="student@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" id="passwordInput" name="password" class="form-control"
+                                   value="pass123" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold mb-3 shadow-sm">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                    </button>
+                </form>
+
+                <div class="text-center small text-muted mb-4">
+                    Don't have an account? <a th:href="@{/register}" class="fw-bold text-primary">Register as Student</a>
+                </div>
+
+                <!-- One-click credentials helper -->
+                <div class="border-top pt-3">
+                    <div class="text-muted small fw-bold mb-2 text-uppercase" style="letter-spacing: 0.05em; font-size: 0.72rem;">
+                        Quick Fill Test Accounts:
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary text-start d-flex justify-content-between align-items-center"
+                                onclick="fillCreds('alice@example.com', 'pass123')">
+                            <span><i class="bi bi-person me-1"></i> <strong>Alice Johnson</strong> (Student - 3 courses)</span>
+                            <span class="badge bg-secondary">Fill</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary text-start d-flex justify-content-between align-items-center"
+                                onclick="fillCreds('bob@example.com', 'pass123')">
+                            <span><i class="bi bi-person me-1"></i> <strong>Bob Smith</strong> (Student - 2 courses)</span>
+                            <span class="badge bg-secondary">Fill</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger text-start d-flex justify-content-between align-items-center"
+                                onclick="fillCreds('admin@learnhub.com', 'admin123')">
+                            <span><i class="bi bi-shield-lock me-1"></i> <strong>Portal Admin</strong> (Manage all)</span>
+                            <span class="badge bg-danger">Fill</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function fillCreds(email, password) {
+        document.getElementById('emailInput').value = email;
+        document.getElementById('passwordInput').value = password;
+    }
+</script>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Manage Students – Admin')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-4">
+    <!-- Header -->
+    <div class="custom-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge bg-danger-subtle text-danger fw-bold px-3 py-1 rounded-pill mb-1">Student Management</span>
+                <h3 class="fw-bold mb-0">Registered Student Roster</h3>
+                <p class="text-muted small mb-0">Inspect individual student enrollments and many-to-many course mappings.</p>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 py-2 fw-bold" th:text="${students.size()} + ' Total Students'">4 Students</span>
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="custom-card p-4">
+        <div class="table-responsive">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Major</th>
+                        <th>Active Course Count</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${students}">
+                        <td>
+                            <code class="fw-bold text-primary" th:text="${student.studentNumber}">STU-2026-001</code>
+                        </td>
+                        <td>
+                            <strong th:text="${student.fullName}">Alice Johnson</strong>
+                        </td>
+                        <td th:text="${student.email}">alice@example.com</td>
+                        <td>
+                            <span class="badge bg-light text-dark border" th:text="${student.major}">Computer Science</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary-subtle text-primary fw-bold"
+                                  th:text="${student.activeEnrollmentCount} + ' Courses'">3 Courses</span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/admin/students/' + ${student.id}}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                <i class="bi bi-journal-text me-1"></i> View Enrolled Courses (<span th:text="${student.activeEnrollmentCount}">3</span>)
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

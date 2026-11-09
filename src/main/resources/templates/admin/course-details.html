@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Course Roster – LearnHub Admin')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-4">
+    <!-- Breadcrumb / Back button -->
+    <div class="mb-3">
+        <a th:href="@{/admin/courses}" class="btn btn-sm btn-outline-secondary rounded-pill">
+            <i class="bi bi-arrow-left me-1"></i> Back to All Courses
+        </a>
+    </div>
+
+    <!-- Course Info Card -->
+    <div class="custom-card p-4 mb-4">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="course-icon-box mb-0" style="width: 56px; height: 56px; font-size: 1.75rem;">
+                        <i th:class="'bi ' + ${course.icon}"></i>
+                    </div>
+                    <div>
+                        <div class="d-flex gap-2 align-items-center mb-1">
+                            <span class="badge bg-light text-dark border fw-bold" th:text="${course.courseCode}">CS101</span>
+                            <span class="badge-category" th:text="${course.category}">Software Engineering</span>
+                        </div>
+                        <h2 class="fw-bold mb-1" th:text="${course.title}">Java Programming &amp; OOP Architecture</h2>
+                        <div class="text-muted small">
+                            <span class="me-3"><i class="bi bi-person me-1"></i> Instructor: <strong th:text="${course.instructor}">Dr. James Gosling</strong></span>
+                            <span><i class="bi bi-clock me-1"></i> Credits: <strong th:text="${course.creditHours} + ' hrs'">4 hrs</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-muted small mt-3 mb-0" th:text="${course.description}">Description</p>
+            </div>
+            <div class="col-lg-4 mt-3 mt-lg-0">
+                <div class="p-3 bg-light rounded-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-muted small">Enrollment Roster:</span>
+                        <strong th:text="${course.enrolledCount} + ' / ' + ${course.maxCapacity} + ' Students'">3 / 25</strong>
+                    </div>
+                    <div class="progress progress-capacity mb-2">
+                        <div class="progress-bar bg-primary" role="progressbar"
+                             th:style="'width: ' + (${course.enrolledCount} * 100 / ${course.maxCapacity}) + '%;'"></div>
+                    </div>
+                    <div class="small text-muted d-flex justify-content-between">
+                        <span>Available Seats:</span>
+                        <strong class="text-success" th:text="${course.availableSeats}">22</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrolled Students Table (Direct Reference Traversal) -->
+    <div class="custom-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold mb-0">
+                    <i class="bi bi-people-fill text-primary me-2"></i>Students Enrolled in this Course
+                </h4>
+                <div class="text-muted small">
+                    Populated by executing <code>course.getEnrolledStudents()</code> across the dynamic <code>ArrayList&lt;Enrollment&gt;</code>.
+                </div>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 py-2" th:text="${course.enrolledCount} + ' Students Enrolled'">3 Students</span>
+        </div>
+
+        <div th:if="${#lists.isEmpty(enrolledStudents)}" class="text-center py-5">
+            <i class="bi bi-person-x fs-1 text-muted mb-2"></i>
+            <h5>No students enrolled yet</h5>
+            <p class="text-muted small">Students will appear here as soon as they enroll through their portal.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(enrolledStudents)}" class="table-responsive">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Email Address</th>
+                        <th>Major / Program</th>
+                        <th>Other Enrolled Courses</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${enrolledStudents}">
+                        <td>
+                            <code class="fw-bold text-primary" th:text="${student.studentNumber}">STU-2026-001</code>
+                        </td>
+                        <td>
+                            <strong th:text="${student.fullName}">Alice Johnson</strong>
+                        </td>
+                        <td th:text="${student.email}">alice@example.com</td>
+                        <td>
+                            <span class="badge bg-light text-dark border" th:text="${student.major}">Computer Science</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary-subtle text-secondary"
+                                  th:text="${student.activeEnrollmentCount} + ' total courses'">3 total</span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/admin/students/' + ${student.id}}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                <i class="bi bi-eye me-1"></i> View Student
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

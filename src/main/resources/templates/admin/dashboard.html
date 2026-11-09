@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Admin Dashboard – LearnHub')}"></head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: alerts}"></div>
+
+<main class="container py-4">
+    <!-- Admin Header Banner -->
+    <div class="custom-card p-4 mb-4 bg-white">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="course-icon-box mb-0" style="background: #fef2f2; color: #dc2626;">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <div>
+                        <div class="badge bg-danger-subtle text-danger fw-bold mb-1">Administration Console</div>
+                        <h2 class="fw-bold mb-1" th:text="${admin.fullName}">Portal Administrator</h2>
+                        <div class="text-muted small">
+                            <span class="me-3"><i class="bi bi-person-badge me-1"></i> Employee ID: <strong th:text="${admin.employeeId}">EMP-9001</strong></span>
+                            <span class="me-3"><i class="bi bi-building me-1"></i> Department: <strong th:text="${admin.department}">Academic Affairs</strong></span>
+                            <span><i class="bi bi-envelope me-1"></i> <span th:text="${admin.email}">admin@learnhub.com</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a th:href="@{/admin/courses}" class="btn btn-primary px-3 py-2 rounded-pill fw-bold shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Add / Manage Courses
+                </a>
+                <a th:href="@{/admin/students}" class="btn btn-outline-secondary px-3 py-2 rounded-pill ms-2">
+                    <i class="bi bi-people me-1"></i> View Students
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metric Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary-subtle text-primary">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0" th:text="${metrics.totalStudents}">4</h3>
+                    <div class="text-muted small">Total Students</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-success-subtle text-success">
+                    <i class="bi bi-journal-code"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0" th:text="${metrics.totalCourses}">5</h3>
+                    <div class="text-muted small">Active Courses</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-warning-subtle text-warning">
+                    <i class="bi bi-link-45deg"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0" th:text="${metrics.activeEnrollments}">10</h3>
+                    <div class="text-muted small">Active Enrollments</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-info-subtle text-info">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-0 text-truncate" style="max-width: 140px;" th:text="${metrics.mostPopularCourse}">Java</h6>
+                    <div class="text-muted small">Top Course</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Enrollments & Quick Actions -->
+    <div class="row g-4 mb-4">
+        <!-- Recent Enrollments -->
+        <div class="col-lg-8">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-primary me-2"></i>Recent Student Enrollments (M:N)</h5>
+                    <a th:href="@{/admin/enrollments}" class="btn btn-sm btn-outline-primary rounded-pill">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-custom table-hover small">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="enr : ${recentEnrollments}">
+                                <td>
+                                    <a th:href="@{'/admin/students/' + ${enr.student.id}}" class="fw-bold text-decoration-none">
+                                        <i class="bi bi-person me-1"></i><span th:text="${enr.student.fullName}">Alice</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{'/admin/courses/' + ${enr.course.courseId}}" class="text-dark text-decoration-none">
+                                        <strong th:text="${enr.course.title}">Java Programming</strong>
+                                    </a>
+                                </td>
+                                <td th:text="${enr.formattedDate}">Nov 09, 2026</td>
+                                <td>
+                                    <span class="badge" th:classappend="${enr.active ? 'bg-success' : 'bg-secondary'}" th:text="${enr.status}">ACTIVE</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Course Capacity Summary -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-pie-chart text-success me-2"></i>Course Capacity</h5>
+                    <a th:href="@{/admin/courses}" class="small text-primary text-decoration-none">All Courses</a>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                    <div th:each="c : ${courses}" class="p-2 border rounded-3 bg-light">
+                        <div class="d-flex justify-content-between align-items-center small mb-1">
+                            <a th:href="@{'/admin/courses/' + ${c.courseId}}" class="fw-bold text-dark text-decoration-none" th:text="${c.title}">Title</a>
+                            <span class="badge bg-secondary" th:text="${c.enrolledCount} + '/' + ${c.maxCapacity}">3/30</span>
+                        </div>
+                        <div class="progress progress-capacity">
+                            <div class="progress-bar bg-success" role="progressbar"
+                                 th:style="'width: ' + (${c.enrolledCount} * 100 / ${c.maxCapacity}) + '%;'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

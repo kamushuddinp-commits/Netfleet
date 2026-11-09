@@ -1,0 +1,197 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+    --accent: #10b981;
+    --accent-dark: #059669;
+    --dark: #0f172a;
+    --slate: #475569;
+    --light-bg: #f8fafc;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--light-bg);
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+}
+
+.brand-icon {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+/* Hero Section */
+.hero-gradient {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 4rem 0;
+    border-radius: 0 0 2rem 2rem;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+}
+
+/* Cards */
+.custom-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    background: white;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-card:hover {
+    box-shadow: var(--hover-shadow);
+}
+
+.course-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    border: 1px solid #e2e8f0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--hover-shadow);
+    border-color: #cbd5e1;
+}
+
+.course-card .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+/* Stat Cards */
+.stat-card {
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    background: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: var(--card-shadow);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+}
+
+/* Badges */
+.badge-category {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+}
+
+.badge-enrolled {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+}
+
+/* Tables */
+.table-custom {
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.table-custom thead th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.85rem 1rem;
+}
+
+.table-custom tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Code Concept Boxes */
+.concept-box {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    font-family: "JetBrains Mono", Consolas, Monaco, "Courier New", monospace;
+    font-size: 0.88rem;
+    overflow-x: auto;
+}
+
+/* Progress bar */
+.progress-capacity {
+    height: 6px;
+    border-radius: 3px;
+    background-color: #e2e8f0;
+}
+
+/* Quick login badges */
+.quick-login-card {
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    border-radius: 0.75rem;
+}
+
+.quick-login-card:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
